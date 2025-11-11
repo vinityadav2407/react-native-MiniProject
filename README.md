@@ -26,6 +26,9 @@ StockApp/
 
 ---
 
+
+---
+
 ## ⭐ Features
 
 - View complete stock list with quantities
@@ -52,6 +55,20 @@ StockApp/
 | **Create Item** | Add or update stock items |
 
 ---
+
+## 🧑‍💻 How to Create a New React Native Project
+
+Make sure you have **Node.js**, **Java JDK**, and **Android Studio** installed.
+
+Then run:
+
+```bash
+npx react-native init StockApp
+````
+Now move into your project:
+```
+cd StockApp
+```
 
 ## 🚀 How to Run the Project
 Install Dependencies
