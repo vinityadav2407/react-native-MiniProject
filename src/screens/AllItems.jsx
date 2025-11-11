@@ -12,7 +12,7 @@ const AllItems = ({data}) => {
       <FlatList
       data={data}
       keyExtractor={(item)=> item.id}
-
+      style={{marginBottom:20}}
       renderItem={({item})=>
         <View style={[styles.itemContainer,{backgroundColor:item.stock<15?'#ffcccc':'#d7f6bfff'}]}>
         <Text style={styles.itemText}>{item.name}</Text>

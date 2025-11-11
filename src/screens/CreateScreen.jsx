@@ -8,42 +8,83 @@ import {
 } from 'react-native';
 import React, { use, useState } from 'react';
 
-const CreateScreen = ({data,setdata}) => {
-
+const CreateScreen = ({ data, setdata }) => {
   let [item, setItem] = useState('');
   let [stockQnt, setStockQnt] = useState('');
-  let [isEdit,setIsEdit]=useState(false);
-  let [editItmeId,setEditItemId]=useState(null);
+  let [isEdit, setIsEdit] = useState(false);
+  let [editItmeId, setEditItemId] = useState(null);
 
-  let addItemHandler = ()=>{
-    let newItem={
-      id:Date.now(),
-      name:item,
-      stock:stockQnt
+  let addItemHandler = () => {
+    if (!item.trim()) {
+      alert('Item name cannot be empty');
+      return;
     }
-    setdata([...data,newItem])
-    setItem('')
-    setStockQnt('')
-    setIsEdit(false)
-  }
 
-  let deleteItemHandler=(id)=>{
-    setdata(data.filter((item)=>item.id!==id));
-  }
-  
-  let editItemHandler=(item)=>{
-    setIsEdit(true)
+    if (!isNaN(item)) {
+      alert('Item name cannot be a number');
+      return;
+    }
+
+    if (!stockQnt.trim()) {
+      alert('Stock quantity cannot be empty');
+      return;
+    }
+    if (isNaN(stockQnt)) {
+      alert('Stock quantity must be a number');
+      return;
+    }
+
+    let newItem = {
+      id: Date.now(),
+      name: item,
+      stock: stockQnt,
+    };
+    setdata([...data, newItem]);
+    setItem('');
+    setStockQnt('');
+    setIsEdit(false);
+  };
+
+  let deleteItemHandler = (id) => {
+    setdata(data.filter(item => item.id !== id));
+  };
+
+  let editItemHandler = (item) => {
+    setIsEdit(true);
     setItem(item.name);
     setEditItemId(item.id);
+  };
 
-  }
+  let updateItemHandler = () => {
+    if (!item.trim()) {
+      alert('Item name cannot be empty');
+      return;
+    }
 
-  let updateItemHandler=()=>{
-       setdata(data.map((items)=>(
-        items.id === editItmeId ? {...items,name:item,stock:stockQnt}:items
-       )))
-       setStockQnt('')
-  }
+    if (!isNaN(item)) {
+      alert('Item name cannot be a number');
+      return;
+    }
+
+    if (!stockQnt.trim()) {
+      alert('Stock quantity cannot be empty');
+      return;
+    }
+
+    if (isNaN(stockQnt)) {
+      alert('Stock quantity must be a number');
+      return;
+    }
+
+    setdata(
+      data.map(items =>
+        items.id === editItmeId
+          ? { ...items, name: item, stock: stockQnt }
+          : items,
+      ),
+    );
+    setStockQnt('');
+  };
   return (
     <View style={styles.container}>
       <TextInput
@@ -57,16 +98,20 @@ const CreateScreen = ({data,setdata}) => {
         placeholder="Enter item quantity"
         value={stockQnt}
         onChangeText={itemQnt => setStockQnt(itemQnt)}
-         keyboardType="number-pad"
+        keyboardType="number-pad"
       />
-      <Pressable style={styles.addButton} onPress={()=> isEdit?updateItemHandler():addItemHandler()}>
-        <Text style={styles.btnText}>{isEdit?'EDIT ITEM IN STOCK': 'ADD ITEM IN STOCK'}</Text>
+      <Pressable
+        style={styles.addButton}
+        onPress={() => (isEdit ? updateItemHandler() : addItemHandler())}
+      >
+        <Text style={styles.btnText}>
+          {isEdit ? 'EDIT ITEM IN STOCK' : 'ADD ITEM IN STOCK'}
+        </Text>
       </Pressable>
 
-      <View style={{flex:1,marginVertical:10}} >
+      <View style={{ flex: 1, marginVertical: 10 }}>
+        <Text style={styles.headingText}>All items in the stock</Text>
 
-          <Text style={styles.headingText}>All items in the stock</Text>
-      
         <FlatList
           data={data}
           keyExtractor={item => item.id}
@@ -79,18 +124,16 @@ const CreateScreen = ({data,setdata}) => {
             >
               <Text style={styles.itemText}>{item.name}</Text>
 
-              <View style={{flexDirection:"row",gap:20}}>
+              <View style={{ flexDirection: 'row', gap: 20 }}>
+                <Text style={styles.itemText}>{item.stock}</Text>
 
-                 <Text style={styles.itemText}>{item.stock}</Text>
+                <Pressable onPress={() => editItemHandler(item)}>
+                  <Text style={styles.itemText}>Edit</Text>
+                </Pressable>
 
-                 <Pressable onPress={()=>editItemHandler(item)}>
-                 <Text style={styles.itemText}>Edit</Text>
-                 </Pressable>
-
-                 <Pressable onPress={()=>deleteItemHandler(item.id)}>
-                 <Text style={styles.itemText}>Delete</Text>
-                 </Pressable>
-
+                <Pressable onPress={() => deleteItemHandler(item.id)}>
+                  <Text style={styles.itemText}>Delete</Text>
+                </Pressable>
               </View>
             </View>
           )}
@@ -107,7 +150,7 @@ const styles = StyleSheet.create({
   container: {
     paddingVertical: '4%',
     gap: 10,
-    flex:1
+    flex: 1,
   },
   input: {
     borderWidth: 1.5,
