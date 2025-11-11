@@ -90,7 +90,8 @@ Enable "Install Unknown Apps" if required.
 | React Native | App user interface and logic             |
 | JavaScript   | Functional programming logic             |
 | Gradle       | Android build process for APK generation |
-
+| React Hooks (useState) |State Management
+| FlatList & Custom Components	|UI Layout |
 ## 📄 License
 
 This project is free to use and modify. Give credit if you showcase it publicly.
